@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test Report</title>
+    <style>
+        body {
+            background-color: lightyellow;
+        }
+        
+        em {
+            color: LightSeaGreen;
+        }
+    </style>
+    <script data-main="scripts/main.js" src="/static/secureporter/js/require.js"></script>
+<!--    <script type="text/javascript" src="/static/secureporter/js/d3.js"></script>
+    <script type="text/javascript" src="/static/secureporter/js/require.js"></script>
+    <script type="text/javascript" src="/static/secureporter/js/wq/chart.js"></script>
+    <script type="text/javascript" src="/static/secureporter/js/wq/pandas.js"></script>-->
+    <script>
+        define(['d3', 'wq/pandas', 'wq/chart'], function (d3, pandas, chart) {
+            var svg = d3.select("#chart").append("svg")
+            var plot = chart.timeSeries();
+            pandas.get('/report-json?format=json', function (data) {
+                svg.datum(data).call(plot);
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+    <h1>Report of collected logs</h1>
+    <em>{{ current_time }}</em>
+    <div id="chart"></div>
+</body>
+
+</html>

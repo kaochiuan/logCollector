@@ -21,3 +21,8 @@ def HelloWorldView(request):
     return render(request, "hello.html", {
         'current_time': str(datetime.now()),
     })
+
+def ReportView(request):
+    return render(request, "report.html", {
+        'current_time': str(datetime.now()),
+    })
