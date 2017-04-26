@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from rest_framework.permissions import AllowAny
 from secureporter.serializers import RecordSerializer
 from secureporter.models import Records
+from django.shortcuts import redirect
 import json
 
 class LogCollectViewSet(viewsets.ModelViewSet):
@@ -22,3 +23,6 @@ def get_client_ip(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
+
+def favicon_redirect(request):
+    return redirect('/static/secureporter/images/favicon.ico')
