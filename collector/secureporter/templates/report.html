@@ -12,21 +12,7 @@
             color: LightSeaGreen;
         }
     </style>
-    <script data-main="scripts/main.js" src="/static/secureporter/js/require.js"></script>
-<!--    <script type="text/javascript" src="/static/secureporter/js/d3.js"></script>
-    <script type="text/javascript" src="/static/secureporter/js/require.js"></script>
-    <script type="text/javascript" src="/static/secureporter/js/wq/chart.js"></script>
-    <script type="text/javascript" src="/static/secureporter/js/wq/pandas.js"></script>-->
-    <script>
-        define(['d3', 'wq/pandas', 'wq/chart'], function (d3, pandas, chart) {
-            var svg = d3.select("#chart").append("svg")
-            var plot = chart.timeSeries();
-            pandas.get('/report-json?format=json', function (data) {
-                svg.datum(data).call(plot);
-            });
-
-        });
-    </script>
+    <script data-main="/static/secureporter/scripts/main.js" src="/static/secureporter/scripts/require.js"></script>
 </head>
 
 <body>
