@@ -16,7 +16,5 @@ class RecordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Records
-        pandas_index = ['record_dt']
-        pandas_unstacked_header = ['device', 'count']
         fields = ('record_id', 'device', 'record_dt', 'is_success', 'count',)
         read_only_fields = ('record_id',)

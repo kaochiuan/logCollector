@@ -6,10 +6,13 @@ class RecordsManager(models.Manager):
         statistic = self.create(device=device, record_dt=record_dt, is_success=is_success, count=count)
         return statistic
 
-    def search_records(self, device, start, end):
+    def search_by_device(self, device, start, end):
         records = self.filter(device=device, record_dt__range=(start, end))
         return records
 
+    def search_by_time(self, start, end):
+        records = self.filter(record_dt__range=(start, end))
+        return records
 
 class Records(models.Model):
     record_id = models.AutoField(primary_key=True)
@@ -24,5 +27,3 @@ class Records(models.Model):
 
     class Meta:
         ordering = ['record_dt']
-
-

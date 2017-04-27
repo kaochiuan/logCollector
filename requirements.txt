@@ -4,4 +4,3 @@ django-filter==1.0.1
 djangorestframework==3.6.2
 Markdown==2.6.8
 PyJWT==1.4.2
-rest-pandas==0.5.0
