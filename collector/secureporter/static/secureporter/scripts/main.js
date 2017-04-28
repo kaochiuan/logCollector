@@ -33,7 +33,12 @@ define(['d3'], function (d3) {
         }
 
         // render the table(s)
-        tabulate(data, ['record_id', 'device', 'record_dt', 'is_success', 'count']); // 5 column table
+        tabulate(data, ['record_id', 'device', 'record_dt', 'is_success', 'spent_seconds']); // 5 column table
 
+    });
+
+
+    d3.json('/failure_rate?start=2017-04-01&end=2017-04-30', function (error, data) {
+       d3.select("#fail_rate").text(data.failure_rate);
     });
 });

@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
-from secureporter.views import LogCollectViewSet, HelloWorldView, ReportView, favicon_redirect, RawDataView
+from secureporter.views import LogCollectViewSet, favicon_redirect, RawDataView, fail_rate
 
 router = routers.DefaultRouter()
 router.register(r'records', LogCollectViewSet)
@@ -25,8 +25,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^hello/$', HelloWorldView, name='hello view'),
-    url(r'^report/$', ReportView, name='report view'),
     url(r'^rawdata/$', RawDataView, name='raw log view'),
     url(r'^favicon.ico/$', favicon_redirect, name='favicon'),
+    url(r'^failure_rate/$', fail_rate, name='failure_rate view'),
 ]

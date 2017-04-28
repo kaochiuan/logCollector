@@ -9,12 +9,12 @@ class RecordSerializer(serializers.ModelSerializer):
                 device=data['device'],
                 record_dt=data['record_dt'],
                 is_success=data['is_success'],
-                count=data['count'])
+                spent_seconds=data['spent_seconds'])
         except MultipleObjectsReturned:
             record = None
         return record
 
     class Meta:
         model = Records
-        fields = ('record_id', 'device', 'record_dt', 'is_success', 'count',)
+        fields = ('record_id', 'device', 'record_dt', 'is_success', 'spent_seconds',)
         read_only_fields = ('record_id',)
