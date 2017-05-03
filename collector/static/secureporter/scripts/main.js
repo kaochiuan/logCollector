@@ -45,7 +45,7 @@ define(['d3', 'wq/chart'], function (d3, chart) {
     d3.json('/plotdata?start=2017-04-20&end=2017-04-21', function (error, data) {
         var svg = d3.select('svg#chart');
         var plot = chart.timeSeries()
-                .timeFormat("%Y-%m-%dT%H:%M:%S")
+                .timeFormat("%Y-%m-%dT%H:%M:%S%Z")
                 .width(800)
                 .height(300);
 
