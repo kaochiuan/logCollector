@@ -1,4 +1,4 @@
-define(['d3'], function (d3) {
+define(['d3', 'wq/chart'], function (d3, chart) {
     d3.json('/records?format=json', function (error, data) {
         function tabulate(data, columns) {
             var table = d3.select('body').append('table')
@@ -41,4 +41,15 @@ define(['d3'], function (d3) {
     d3.json('/failure_rate?start=2017-04-01&end=2017-04-30', function (error, data) {
        d3.select("#fail_rate").text(data.failure_rate);
     });
+
+    d3.json('/plotdata?start=2017-04-20&end=2017-04-21', function (error, data) {
+        var svg = d3.select('svg#chart');
+        var plot = chart.timeSeries()
+                .timeFormat("%Y-%m-%dT%H:%M:%S%Z")
+                .width(800)
+                .height(300);
+
+        svg.datum(data).call(plot);
+    });
+
 });
