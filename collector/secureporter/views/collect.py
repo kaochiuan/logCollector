@@ -7,6 +7,7 @@ from rest_framework.response import Response
 
 from secureporter.models import Records
 from secureporter.serializers import RecordSerializer
+from secureporter.util import dt_util
 
 
 class LogCollectViewSet(viewsets.ModelViewSet):
@@ -17,14 +18,8 @@ class LogCollectViewSet(viewsets.ModelViewSet):
         start = request.GET.get('start', None)
         end = request.GET.get('end', None)
         device = request.GET.get('device', None)
-        if start is not None:
-            datetime_start = datetime.strptime(start, '%Y-%m-%d')
-        else:
-            datetime_start = None
-        if end is not None:
-            datetime_end = datetime.strptime(end, '%Y-%m-%d')
-        else:
-            datetime_end = None
+
+        datetime_start, datetime_end = dt_util.datetime_parse(start, end)
 
         if datetime_start is not None and datetime_end is not None:
             queryset = Records.objects.search_by_time(device, datetime_start, datetime_end)

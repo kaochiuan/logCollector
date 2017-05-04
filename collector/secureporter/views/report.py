@@ -5,6 +5,8 @@ from django.shortcuts import render
 
 from secureporter.models import Records
 from secureporter.plotdata import PlotData, PlotDataEncoder, PlotItem
+from secureporter.util import dt_util
+
 
 def RawDataView(request):
     return render(request, "rawdata.html", {
@@ -16,7 +18,7 @@ def fail_rate(request):
     end = request.GET.get('end', None)
     device = request.GET.get('device', None)
 
-    datetime_start, datetime_end = __datetime_parse(start, end)
+    datetime_start, datetime_end = dt_util.datetime_parse(start, end)
     fail_count, total_count, failurerate = Records.objects.fail_rate_by_time(device=device, \
                             start=datetime_start, end=datetime_end)
 
@@ -29,7 +31,7 @@ def plotdata(request):
     end = request.GET.get('end', None)
     device = request.GET.get('device', None)
 
-    datetime_start, datetime_end = __datetime_parse(start, end)
+    datetime_start, datetime_end = dt_util.datetime_parse(start, end)
     raw2response = responseslot(device, datetime_start, datetime_end)
     return JsonResponse([raw2response], encoder=PlotDataEncoder, safe=False)
 
@@ -49,19 +51,3 @@ def responseslot(device, start, end):
     plot_data = PlotData(id="response time", label="Response time", unit="seconds", \
                 itemlist=slot_list)
     return plot_data
-
-
-def __datetime_parse(start, end):
-    if start is not None:
-        datetime_start = datetime.strptime(start, '%Y-%m-%d')
-    else:
-        datetime_start = set_to_midnight(datetime.today())
-    if end is not None:
-        datetime_end = datetime.strptime(end, '%Y-%m-%d')
-    else:
-        datetime_end = datetime_start + timedelta(days=1)
-
-    return datetime_start, datetime_end
-
-def set_to_midnight(dt):
-    return dt.replace(hour=0, minute=0, second=0, microsecond=0)
