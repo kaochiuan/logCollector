@@ -19,9 +19,8 @@ class LogCollectViewSet(viewsets.ModelViewSet):
         end = request.GET.get('end', None)
         device = request.GET.get('device', None)
 
-        datetime_start, datetime_end = dt_util.datetime_parse(start, end)
-
-        if datetime_start is not None and datetime_end is not None:
+        if start is not None and end is not None:
+            datetime_start, datetime_end = dt_util.datetime_parse(start, end)
             queryset = Records.objects.search_by_time(device, datetime_start, datetime_end)
         else:
             queryset = Records.objects.all()
