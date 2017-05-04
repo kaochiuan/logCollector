@@ -3,6 +3,8 @@ from rest_framework import serializers
 from secureporter.models import Records
 
 class RecordSerializer(serializers.ModelSerializer):
+    record_dt = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S%Z")
+
     def create(self, data):
         try:
             record = Records.objects.create_record(

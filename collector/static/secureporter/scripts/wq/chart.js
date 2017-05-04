@@ -1113,13 +1113,13 @@ chart.scatter = function() {
 // Time series scatter plot
 chart.timeSeries = function() {
     var plot = chart.scatter(),
-        format = d3.timeFormat('%Y-%m-%d'),
-        parse = d3.timeParse('%Y-%m-%d');
+        format = d3.utcFormat('%Y-%m-%d'),
+        parse = d3.utcParse('%Y-%m-%d');
 
     plot.xvalue(function(d) {
         return parse(d.date);
     })
-    .xscalefn(d3.scaleTime)
+    .xscalefn(d3.scaleUtc)
     .xnice(d3.timeDay)
     .yvalue(function(d) {
         return d.value;
@@ -1140,8 +1140,8 @@ chart.timeSeries = function() {
         if (!arguments.length) {
             return format;
         }
-        format = d3.timeFormat(val);
-        parse = d3.timeParse(val);
+        format = d3.utcFormat(val);
+        parse = d3.utcParse(val);
         return plot;
     };
 

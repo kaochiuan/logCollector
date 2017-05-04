@@ -59,6 +59,6 @@ def __datetime_parse(start, end):
     if end is not None:
         datetime_end = datetime.strptime(end, '%Y-%m-%d')
     else:
-        datetime_end = datetime.today() + timedelta(days=1)
+        datetime_end = datetime_start + timedelta(days=1)
 
     return datetime_start, datetime_end
