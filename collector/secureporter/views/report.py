@@ -1,14 +1,10 @@
-from django.shortcuts import render
-from datetime import datetime
-from secureporter.models import Records
-from rest_framework.response import Response
-from django.http import JsonResponse
-from datetime import timedelta
-from math import ceil
-from secureporter.plotdata import PlotItem, PlotData, PlotDataEncoder, PlotItemEncoder
-import json
+from datetime import datetime, timedelta
 
-# Create your views here.
+from django.http import JsonResponse
+from django.shortcuts import render
+
+from secureporter.models import Records
+from secureporter.plotdata import PlotData, PlotDataEncoder, PlotItem
 
 def RawDataView(request):
     return render(request, "rawdata.html", {
@@ -16,49 +12,29 @@ def RawDataView(request):
     })
 
 def fail_rate(request):
-    start = request.GET['start']
-    end = request.GET['end']
+    start = request.GET.get('start', None)
+    end = request.GET.get('end', None)
+    device = request.GET.get('device', None)
 
-    datetime_start = datetime.strptime(start, '%Y-%m-%d')
-    datetime_end = datetime.strptime(end, '%Y-%m-%d')
-    failurerate = Records.objects.fail_rate_by_time(device=None, \
+    datetime_start, datetime_end = __datetime_parse(start, end)
+    fail_count, total_count, failurerate = Records.objects.fail_rate_by_time(device=device, \
                             start=datetime_start, end=datetime_end)
 
-    return JsonResponse({"failure_rate" : failurerate})
+    return JsonResponse( \
+            {"fail_rate" : failurerate, "fail_count": fail_count, \
+             "total_count": total_count})
 
 def plotdata(request):
-    start = request.GET['start']
-    end = request.GET['end']
-    datetime_start = datetime.strptime(start, '%Y-%m-%d')
-    datetime_end = datetime.strptime(end, '%Y-%m-%d')
-    #raw2failrate = failrateslot(datetime_start, datetime_end)
-    raw2response = responseslot(datetime_start, datetime_end)
-    #dumps = json.dumps(raw2result, cls=PlotDataEncoder)
+    start = request.GET.get('start', None)
+    end = request.GET.get('end', None)
+    device = request.GET.get('device', None)
+
+    datetime_start, datetime_end = __datetime_parse(start, end)
+    raw2response = responseslot(device, datetime_start, datetime_end)
     return JsonResponse([raw2response], encoder=PlotDataEncoder, safe=False)
 
-def failrateslot(start, end):
-    interval = end - start
-    slot_interval = interval.total_seconds() / timedelta(minutes=5).total_seconds()
-    slot = ceil(slot_interval)
-
-    slot_list = []
-    for index in range(0, slot):
-        slot_date_start = start + timedelta(minutes=5) * index
-        slot_date_end = slot_date_start + timedelta(minutes=5)
-        failrate = Records.objects.fail_rate_by_time(device=None, \
-                                    start=slot_date_start, end=slot_date_end)
-        item = PlotItem(date=slot_date_start, value=failrate)
-        slot_list.append(item)
-
-    plot_data = PlotData(id="fail rate", label="Fail rate", unit="%", itemlist=slot_list)
-    return plot_data
-
-def responseslot(start, end):
-    interval = end - start
-    slot_interval = interval.total_seconds() / timedelta(minutes=5).total_seconds()
-    slot = ceil(slot_interval)
-
-    records = Records.objects.response_by_time(device=None, \
+def responseslot(device, start, end):
+    records = Records.objects.response_by_time(device=device, \
                                     start=start, end=end)
     slot_list = []
     for rec in records:
@@ -73,3 +49,16 @@ def responseslot(start, end):
     plot_data = PlotData(id="response time", label="Response time", unit="seconds", \
                 itemlist=slot_list)
     return plot_data
+
+
+def __datetime_parse(start, end):
+    if start is not None:
+        datetime_start = datetime.strptime(start, '%Y-%m-%d')
+    else:
+        datetime_start = datetime.today()
+    if end is not None:
+        datetime_end = datetime.strptime(end, '%Y-%m-%d')
+    else:
+        datetime_end = datetime.today() + timedelta(days=1)
+
+    return datetime_start, datetime_end

@@ -29,7 +29,7 @@ class RecordsManager(models.Manager):
         else:
             rate = fail / total
 
-        return rate
+        return fail, total, rate
 
     def response_by_time(self, device, start, end):
         if device is None:

@@ -5,7 +5,7 @@
     <title>Test Report</title>
     <style>
         body {
-            background-color: lightyellow;
+            background-color: transparent;
         }
         
         em {
@@ -23,13 +23,35 @@
 <body>
     <h1>Raw data of collected logs</h1>
     <em>{{ current_time }}</em>
-    <p>
+    <hr>
+    <p>Select date</p>
+    <div align="left" id="datesetting">
+        From : <input type="date" name="date_start" id="date_start" /> To : <input type="date" name="date_end" id="date_end"
+        />
+        <br />
+        <input type="button" id="renderReport" value="Submit" />
+    </div>
+    <hr>
+    <h1>Summary</h1>
+    <p></p>
     <div id="result">
-        Fail rate:
+        Total count:
+        <span id="total_count"></span>
+        <br/> Fail count:
+        <span id="fail_count"></span>
+        <br/> Fail rate:
         <span id="fail_rate"></span>
     </div>
-    <svg id="chart">
-    </svg>
+    <hr>
+    <h1>Response trend chart</h1>
+    <p></p>
+    <div id="chart">
+    </div>
+    <hr>
+    <h1>Raw data</h1>
+    <p></p>
+    <div id="raw_table">
+    </div>
 </body>
 
 </html>

@@ -43,7 +43,6 @@ class PlotItemEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, datetime.datetime):
             return obj.isoformat()
-            #return time.mktime(obj.timetuple()) * 1000
         else:
             return obj.__dict__
 
