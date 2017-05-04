@@ -51,3 +51,7 @@ def responseslot(device, start, end):
     plot_data = PlotData(id="response time", label="Response time", unit="seconds", \
                 itemlist=slot_list)
     return plot_data
+
+def delete_everything(request):
+    Records.objects.all().delete()
+    return JsonResponse({"result": "all records had been deleted."})

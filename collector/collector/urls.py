@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
-from secureporter.views import LogCollectViewSet, favicon_redirect, RawDataView, fail_rate, plotdata
+from secureporter.views import LogCollectViewSet, favicon_redirect, RawDataView, fail_rate, plotdata, delete_everything
 
 router = routers.DefaultRouter()
 router.register(r'records', LogCollectViewSet)
@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^favicon.ico/$', favicon_redirect, name='favicon'),
     url(r'^failure_rate/$', fail_rate, name='failure_rate view'),
     url(r'^plotdata$', plotdata, name="plotdata"),
+    url(r'^delete_everything$', delete_everything, name="delete_everything"),
 ]
