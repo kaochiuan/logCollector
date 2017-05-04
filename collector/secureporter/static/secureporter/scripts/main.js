@@ -20,10 +20,11 @@ define(['d3', 'draw'], function (d3, draw) {
                 d3.select('svg').remove();
                 d3.select('table').remove();
                 d3.json('/delete_everything', function (error, data) {
-                    d3.select("#fail_rate").text();
-                    d3.select("#fail_count").text();
-                    d3.select("#total_count").text();
-                    d3.select("#result").html("")
+                    d3.select('#summary > div').remove();
+                    d3.select('#chart > div').remove();
+                    d3.select('#raw_table > div').remove();
+                    d3.select("#result > div").remove();
+                    d3.select("#result").append('div')
                         .append('h1').html(data.result);
                 });
             }

@@ -1,10 +1,20 @@
 define(['d3', 'wq/chart'], function (d3, chart) {
     return {
         renderReport: function (start, end) {
+            // clear garbage element
+            d3.select('#summary > div').remove();
+            d3.select('#chart > div').remove();
+            d3.select('#raw_table > div').remove();
+            d3.select("#result > div").remove();
+
             // load raw data to table
             d3.json('/records?format=json&start=' + start + '&end=' + end, function (error, data) {
                 function tabulate(data, columns) {
-                    var table = d3.select('#raw_table').append('table')
+                    d3.select('#raw_table').append('div');
+                    d3.select('#raw_table > div').append('hr');
+                    d3.select('#raw_table > div').append('h1').text("Raw data");
+                    d3.select('#raw_table > div').append('p');
+                    var table = d3.select('#raw_table > div').append('table');
                     var thead = table.append('thead')
                     var tbody = table.append('tbody');
 
@@ -42,14 +52,23 @@ define(['d3', 'wq/chart'], function (d3, chart) {
 
             // text the count and rate of data
             d3.json('/failure_rate?start=' + start + '&end=' + end, function (error, data) {
-                d3.select("#fail_rate").text(data.fail_rate);
-                d3.select("#fail_count").text(data.fail_count);
-                d3.select("#total_count").text(data.total_count);
+                d3.select('#summary').append('div');
+                d3.select('#summary > div').append('h1').text("Summary");
+                d3.select('#summary > div').append('p');
+                d3.select('#summary > div').append('span').text('Fail count:' + data.total_count);
+                d3.select('#summary > div').append('br');
+                d3.select('#summary > div').append('span').text('Fail count:' + data.fail_count);
+                d3.select('#summary > div').append('br');
+                d3.select('#summary > div').append('span').text('Fail rate:' + data.fail_rate);
             });
 
             // draw response time of data
             d3.json('/plotdata?start=' + start + '&end=' + end, function (error, data) {
-                var svg = d3.select('#chart').append('svg');
+                d3.select('#chart').append('div');
+                d3.select('#chart > div').append('hr');
+                d3.select('#chart > div').append('h1').text("Response trend chart");
+                d3.select('#chart > div').append('p');
+                var svg = d3.select('#chart > div').append('svg');
                 var plot = chart.timeSeries()
                     .timeFormat("%Y-%m-%dT%H:%M:%S%Z")
                     .width(800)
@@ -57,6 +76,7 @@ define(['d3', 'wq/chart'], function (d3, chart) {
 
                 svg.datum(data).call(plot);
             });
+
         }
     }
 

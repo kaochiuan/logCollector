@@ -54,4 +54,4 @@ def responseslot(device, start, end):
 
 def delete_everything(request):
     Records.objects.all().delete()
-    return JsonResponse({"result": "all records had been deleted."})
+    return JsonResponse({"result": "All records had been deleted."})

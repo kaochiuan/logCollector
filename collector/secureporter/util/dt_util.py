@@ -14,3 +14,6 @@ def datetime_parse(start, end):
 
 def set_to_midnight(dt):
     return dt.replace(hour=0, minute=0, second=0, microsecond=0)
+
+def set_precision_to_second(dt):
+    return dt.replace(microsecond=0)

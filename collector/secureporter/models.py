@@ -1,9 +1,12 @@
 from django.db import models
 from django.db.models.query_utils import Q
 from django.db.models import Count, Min, Sum, Avg
+from secureporter.util import dt_util
 
 class RecordsManager(models.Manager):
     def create_record(self, device, record_dt, is_success, spent_seconds):
+        spent_seconds = round(spent_seconds, 3)
+        record_dt = dt_util.set_precision_to_second(record_dt)
         statistic = self.create(device=device, record_dt=record_dt, \
                         is_success=is_success, spent_seconds=spent_seconds)
         return statistic
@@ -25,7 +28,7 @@ class RecordsManager(models.Manager):
             total = self.filter(device=device, record_dt__gte=start, record_dt__lt=end).count()
 
         if total == 0:
-            rate = None
+            rate = 0
         else:
             rate = fail / total
 
