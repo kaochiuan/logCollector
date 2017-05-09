@@ -55,9 +55,9 @@ define(['d3', 'wq/chart'], function (d3, chart) {
                 d3.select('#summary').append('div');
                 d3.select('#summary > div').append('h1').text("Summary");
                 d3.select('#summary > div').append('p');
-                d3.select('#summary > div').append('span').text('Fail count:' + data.total_count);
-                d3.select('#summary > div').append('br');
                 d3.select('#summary > div').append('span').text('Fail count:' + data.fail_count);
+                d3.select('#summary > div').append('br');
+                d3.select('#summary > div').append('span').text('Total count:' + data.total_count);                
                 d3.select('#summary > div').append('br');
                 d3.select('#summary > div').append('span').text('Fail rate:' + data.fail_rate);
             });
