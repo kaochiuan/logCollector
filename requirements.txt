@@ -1,6 +1,6 @@
 Django==1.10.7
 django-admin==1.0.2
 django-filter==1.0.1
-djangorestframework==3.6.2
+djangorestframework==3.11.2
 Markdown==2.6.8
 PyJWT==1.4.2
